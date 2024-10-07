@@ -6,6 +6,7 @@ use App\HelperClasses\Constants;
 use App\Http\Requests\ProjectMaterialsRequest;
 use App\Models\Materials;
 use App\Models\Project;
+use App\Models\ProjectMaterials;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Http\Request;
@@ -51,42 +52,31 @@ class ProjectMaterialsCrudController extends CrudController
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
-*/
+         */
         $this->crud->addColumns([
-                [
-            'name' => 'material',
-            'type' => 'closure',
-            'label' => 'material name',
-            'orderable' => false,
-            'orderLogic' => 'false',
+            [
+                'name' => 'material',
+                'type' => 'closure',
+                'label' => 'material name',
+                'orderable' => false,
+                'orderLogic' => 'false',
 
-            'searchLogic' =>'false',
+                'searchLogic' => 'false',
 
+                'function' => function ($entry) {
+                    return $entry->materials->name;
+                },
+            ],
+            [
+                'name' => 'project',
+                'type' => 'closure',
+                'label' => 'project name',
 
-            "function" => function ($entry) {
-                return $entry->materials->name;
-            },
-
-
-
-        ],
-             [
-            'name' => 'project',
-            'type' => 'closure',
-            'label' => 'project name',
-
-            "function" => function ($entry) {
-                return $entry->projects->name;
-            }
-
-
-
-        ]
-
+                'function' => function ($entry) {
+                    return $entry->projects->name;
+                },
+            ],
         ]);
-
-
-
     }
 
     /**
@@ -98,41 +88,32 @@ class ProjectMaterialsCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(ProjectMaterialsRequest::class);
-      //  CRUD::setFromDb(); // set fields from db columns.
+        //  CRUD::setFromDb(); // set fields from db columns.
 
         /**
          * Fields can be defined using the fluent syntax:
          * - CRUD::field('price')->type('number');
          */
-    Crud::addFields(
-        [
+        Crud::addFields([
             [
-                "name" => "project_id",
-                "type" => "select_from_array",
-               'options' => Project::where('status',1)
-                    ->pluck('name', 'id')->toArray(),
-                "label" => "project name",
+                'name' => 'project_id',
+                'type' => 'select_from_array',
+                'options' => Project::where('status', 1)->pluck('name', 'id')->toArray(),
+                'label' => 'project name',
             ],
             [
-                "name" => "material_id",
-                "type" => "select_from_array",
+                'name' => 'material_id',
+                'type' => 'select_from_array',
                 'options' => Materials::pluck('name', 'id')->toArray(),
-                "label" => "material name",
+                'label' => 'material name',
             ],
 
             [
-                "name" => "quantity",
-                "type" => "text",
-                "label" => "quantity",
-            ]
-
-
-        ]
-   );
-
-
-
-
+                'name' => 'quantity',
+                'type' => 'text',
+                'label' => 'quantity',
+            ],
+        ]);
     }
 
     /**
@@ -146,30 +127,40 @@ class ProjectMaterialsCrudController extends CrudController
         $this->setupCreateOperation();
     }
 
+    public function showRequierment(Request $request)
+    {
+        // //dd($request->id);
+        $project = Project::with('materials')->find($request->id);
 
+        return view('project_Requirement_Materials', compact('project'));
+    }
 
-public function showRequierment(Request $request)
+    public function projectRecommendMaterial(Request $request)
+    {
+        // //dd($request->id);
+        $project = Project::with('materials')->find($request->id);
 
-{
-// //dd($request->id);
-$project=Project::with('materials')->find($request->id);
+        return view('vendor.backpack.projectMaterials', compact('project'));
+    }
 
+    public function destroy($project_id, $material_id)
+    {
+        $material = ProjectMaterials::where('project_id', $project_id)->where('material_id', $material_id);
+        $material->delete();
 
-return
-view('project_Requirement_Materials',compact('project'));
-}
+        return redirect()->back()->with('success', 'Material deleted successfully!');
+    }
 
+    public function materialsRequireUpdate(Request $request, $project_id, $material_id)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:0', // Validate quantity
+        ]);
 
-
-public function projectRecommendMaterial(Request $request)
-{
-// //dd($request->id);
-    $project=Project::with('materials')->find($request->id);
-
-
-return
-       view('vendor.backpack.projectMaterials',compact('project'));
-}
-
-
+        ProjectMaterials::where('project_id', $project_id)
+            ->where('material_id', $material_id)
+            ->first()
+            ->update(['quantity' => $request->quantity]);
+        return redirect()->back()->with('success', 'Material updated successfully!');
+    }
 }

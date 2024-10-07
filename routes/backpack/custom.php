@@ -26,7 +26,8 @@ route::get('project/showRequierment/{id}', action: [ProjectMaterialsCrudControll
 
 route::get('/projectRecommendMaterial/{id}/show', action: [ProjectMaterialsCrudController::class, 'projectRecommendMaterial'])->name(name: 'project.materials.recommand');
 
-
+Route::delete('/materialsRequire/{project_id}/{material_id}', [ProjectMaterialsCrudController::class, 'destroy'])->name('materialsRequire.destroy');
+Route::put('/materialsRequireUpdate/{project_id}/{material_id}', [ProjectMaterialsCrudController::class, 'materialsRequireUpdate'])->name('materialsRequireUpdate');
 
 
 
