@@ -88,7 +88,7 @@
                                             data-project_id="{{ $project->id }}"
                                             data-material_id="{{ $item->id }}">
                                             Edit
-                                        </button>
+                                        </button>&nbsp;
                                         <form action="{{ route('materialsRequire.destroy', [$project->id, $item->id]) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
