@@ -4,4 +4,6 @@
 <x-backpack::menu-item title="Users" icon="la la-question" :link="backpack_url('user')" />
 <x-backpack::menu-item title="Projects" icon="la la-question" :link="backpack_url('project')" />
 <x-backpack::menu-item title="Materials" icon="la la-question" :link="backpack_url('materials')" />
-<x-backpack::menu-item title="Project materials" icon="la la-question" :link="backpack_url('project-materials')" />
+{{-- <x-backpack::menu-item title="Project materials" icon="la la-question" :link="backpack_url('project-materials')" /> --}}
+<x-backpack::menu-item title="Requests" icon="la la-question" :link="backpack_url('request')" />
+{{-- <x-backpack::menu-item title="Request details" icon="la la-question" :link="backpack_url('request-detail')" /> --}}

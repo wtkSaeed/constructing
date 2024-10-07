@@ -48,6 +48,13 @@ class Constants
 
 
     ];
+
+    const requestStatus = [
+        0 =>"cancelled",
+        1 => "in preview",
+        2 => "approved",
+        3 => "rejected",
+    ];
     const CompanyStatus = [
         0 => "معطلة",
         1 => "فعالة",
