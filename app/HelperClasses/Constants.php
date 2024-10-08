@@ -55,9 +55,9 @@ class Constants
         2 => "approved",
         3 => "rejected",
     ];
-    const CompanyStatus = [
-        0 => "معطلة",
-        1 => "فعالة",
+    const userStatus = [
+        0 => "Operator",
+        1 => "Manager",
     ];
     const SourceTypes = [
         1 => "بنك",

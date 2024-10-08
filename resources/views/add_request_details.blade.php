@@ -36,25 +36,30 @@
                         </button>
                     </div>
                     <!-- Page title actions -->
-                    <div class="col-auto ms-auto d-print-none">
-                        <div class="btn-list">
-                            <form action="{{route('changeRequestStatus',$req->id)}}"
-                                method="GET" style="display:inline;">
-                                @csrf
-                            <span class="d-none d-sm-inline">
-                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure you want to change  this status?')">Change Request Status</button>
+                    @if (backpack_user()->type == 1)
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                                <form action="{{ route('changeRequestStatus', $req->id) }}" method="GET"
+                                    style="display:inline;">
+                                    @csrf
+                                    <span class="d-none d-sm-inline">
+                                        <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('Are you sure you want to change  this status?')">Change
+                                            Request Status</button>
 
 
 
-                            <select name="request_status"  value="{{ $req->status }}"  class="btn">
-                                @foreach($requestStatus as $key => $status)
-                                    <option value="{{ $key }}" {{$key ==$req->status?'selected':''}}>{{ $status }}</option>
-                                @endforeach
-                            </select>
-</span></form>
+                                        <select name="request_status" value="{{ $req->status }}" class="btn">
+                                            @foreach ($requestStatus as $key => $status)
+                                                <option value="{{ $key }}" {{ $key == $req->status ? 'selected' : '' }}>
+                                                    {{ $status }}</option>
+                                            @endforeach
+                                        </select>
+                                    </span>
+                                </form>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
             </div>
@@ -134,8 +139,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="quantity">Quantity:</label>
-                                <input type="number" class="form-control" id="modalModifyQuantity" name="quantity"
-                                    required>
+                                <input type="number" class="form-control" id="modalModifyQuantity" name="quantity" required>
                             </div>
                             <input type="hidden" id="modal_id" name="id">
 
@@ -151,8 +155,7 @@
 
         {{-- modal for add new details --}}
 
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal"
-            aria-hidden="true">
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
