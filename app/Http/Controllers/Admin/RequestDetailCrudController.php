@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Exception;
 
 use Alert;
+use App\HelperClasses\Constants;
 use App\Models\Materials;
 use App\Models\Project;
 
@@ -95,8 +96,9 @@ class RequestDetailCrudController extends CrudController
         $materials = Materials::all();
         // $details = $req->requestDetails();dd($details);
          $details = requestDetails::where('request_id',$req->id)->get();
+        $requestStatus=Constants::requestStatus;
 
-        return view('add_request_details', compact(['req', 'materials', 'details']));
+        return view('add_request_details', compact(['req', 'materials', 'details','requestStatus']));
     }
 
     public function saveRequestMaterials(\Illuminate\Http\Request $request)

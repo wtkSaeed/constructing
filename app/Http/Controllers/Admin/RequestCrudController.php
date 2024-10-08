@@ -158,6 +158,13 @@ class RequestCrudController extends CrudController
         $this->setupCreateOperation();
     }
 
+public function changeRequestStatus(\Illuminate\Http\Request $request,$id){
+// dd($request->all());
+request::where('id', $id)
+->first()
+->update(['status' => $request->request_status]);
+return redirect()->back()->with('success', 'Request Status updated successfully!');
 
+}
 
 }
