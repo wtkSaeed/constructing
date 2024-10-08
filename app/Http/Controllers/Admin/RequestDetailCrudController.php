@@ -114,7 +114,9 @@ class RequestDetailCrudController extends CrudController
                 \Illuminate\Validation\Rule::unique('request_details')->where(function ($query) use ($request) {
                     return $query->where('request_id', $request->request_id);
                 }),
-
+                \Illuminate\Validation\Rule::exists('project_materials')->where(function ($query) use ($request) {
+                    return $query->where('material_id', $request->material_id);
+                }),
 
             ],
  'quantity' => 'required|min:0',
