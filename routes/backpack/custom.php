@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ProjectMaterialsCrudController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RequestCrudController;
 use App\Http\Controllers\Admin\RequestDetailCrudController;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,10 @@ Route::group(
         Route::put('/materialsRequestUpdate/{id}', [RequestDetailCrudController::class, 'materialsRequestUpdate'])->name('materialsRequestUpdate');
 
         route::get('/admin/changeRequestStatus/{id}',  [RequestCrudController::class, 'changeRequestStatus'])->name( 'changeRequestStatus');
+
+
+        Route::get('/material-report', [ReportController::class, 'index'])->name("materialReport");
+        Route::get('/material-report/{projectId}', [ReportController::class, 'getMaterialsForProject']);
 
     },
 ); // this should be the absolute last line of this file
